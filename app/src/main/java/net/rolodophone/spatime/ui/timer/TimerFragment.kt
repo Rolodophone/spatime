@@ -1,10 +1,10 @@
 package net.rolodophone.spatime.ui.timer
 
 import android.os.Bundle
-import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TableRow
 import android.widget.TextView
@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import net.rolodophone.spatime.Project
 import net.rolodophone.spatime.R
+import net.rolodophone.spatime.Timer
 
 class TimerFragment: Fragment() {
 
@@ -24,6 +25,9 @@ class TimerFragment: Fragment() {
 
 		val textView: TextView = root.findViewById(R.id.timer_text)
 		timerViewModel.timerString.observe(viewLifecycleOwner) { textView.text = it }
+
+		root.findViewById<Button>(R.id.button_minus).setOnClickListener { timerViewModel.timer.offset(-5) }
+		root.findViewById<Button>(R.id.button_plus).setOnClickListener { timerViewModel.timer.offset(5) }
 
 		val tableLayout = root.findViewById<ViewGroup>(R.id.timer_table_layout)
 		var currentTableRow = TableRow(context)
@@ -43,7 +47,7 @@ class TimerFragment: Fragment() {
 				button.setColorFilter(0xFFFFFFFF.toInt())
 			}
 			button.elevation = 2f
-			button.setOnClickListener(ProjectBtnOnClickListener(timerViewModel, root.findViewById(R.id.project_title), project))
+			button.setOnClickListener(ProjectBtnOnClickListener(timerViewModel.timer, root.findViewById(R.id.project_title), project))
 
 			currentTableRow.addView(button)
 			columnIndex++
@@ -63,13 +67,10 @@ class TimerFragment: Fragment() {
 	}
 }
 
-class ProjectBtnOnClickListener(val viewModel: TimerViewModel, val projectText: TextView, val project: Project): View.OnClickListener {
+class ProjectBtnOnClickListener(val timer: Timer, val projectText: TextView, val project: Project): View.OnClickListener {
 	override fun onClick(v: View) {
 		projectText.text = project.projectName
 		projectText.setTextColor(project.colour)
-
-		viewModel.timer?.cancel()
-		viewModel.timer = viewModel.Timer(30*60)
-		viewModel.timer?.start()
+		timer.set(project.timerMins)
 	}
 }

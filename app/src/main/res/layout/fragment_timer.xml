@@ -26,7 +26,7 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/project_title"
-            tools:text="12:34" />
+            tools:text="0:12:34" />
 
         <Button
             android:id="@+id/button_minus"
@@ -71,7 +71,7 @@
             android:id="@+id/timer_table_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="32dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/button_minus" />
